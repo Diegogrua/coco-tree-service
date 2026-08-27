@@ -1,0 +1,1901 @@
+﻿---
+description: "Motion design system and implementation rules for Coco Tree Service. Defines GSAP, ScrollTrigger, Lenis, camera simulation, parallax, reveals, transitions, microinteractions, responsive behavior, performance and asset-independent animation architecture."
+globs:
+  - "app/**/*.{ts,tsx}"
+  - "components/**/*.{ts,tsx}"
+  - "animations/**/*.{ts,tsx}"
+  - "lib/**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+# COCO TREE SERVICE — MOTION DESIGN RULES
+
+## 1. PURPOSE
+
+This rule defines the motion-design architecture and implementation standards for the entire Coco Tree Service website.
+
+Motion is part of the product experience.
+
+Animations must:
+
+- reinforce the visual narrative;
+- establish hierarchy;
+- guide user attention;
+- communicate transitions between states;
+- create depth;
+- simulate cinematic camera movement;
+- improve perceived quality;
+- remain performant;
+- remain responsive;
+- work with temporary placeholder assets;
+- remain maintainable as the project grows.
+
+Motion must never exist only because an effect looks impressive.
+
+Every animation must have a visual or functional purpose.
+
+---
+
+# 2. CORE MOTION STACK
+
+The project uses the following motion architecture.
+
+## 2.1 Lenis
+
+Lenis is responsible for smooth scrolling.
+
+Lenis controls:
+
+- smooth wheel scrolling;
+- touch-compatible scrolling behavior where appropriate;
+- scroll interpolation;
+- scroll velocity information;
+- synchronization with GSAP.
+
+Lenis is the scrolling layer.
+
+Do NOT implement a second smooth-scroll system.
+
+Do NOT combine Lenis with another smooth-scroll library.
+
+---
+
+# 2.2 GSAP
+
+GSAP is the primary animation engine.
+
+Use GSAP for:
+
+- timelines;
+- transforms;
+- opacity;
+- scale;
+- translation;
+- rotation;
+- clip-path;
+- image movement;
+- text animation;
+- sequencing;
+- state transitions;
+- complex coordinated animations.
+
+GSAP should be preferred over manually managing animation state with React.
+
+---
+
+# 2.3 GSAP ScrollTrigger
+
+ScrollTrigger is the primary scroll-animation system.
+
+Use ScrollTrigger for:
+
+- scroll reveal;
+- parallax;
+- pinned sections;
+- horizontal galleries;
+- scroll-controlled transformations;
+- progress-driven animation;
+- hero camera simulation;
+- section transitions;
+- scroll-linked text animation;
+- image scaling;
+- depth effects.
+
+Do NOT create scroll listeners manually when ScrollTrigger can solve the problem.
+
+Avoid:
+
+window.addEventListener("scroll", ...)
+
+for animation purposes.
+
+---
+
+# 2.4 React
+
+React controls:
+
+- component structure;
+- content;
+- state;
+- interaction states;
+- lifecycle.
+
+React should NOT continuously control frame-by-frame animation.
+
+Avoid patterns such as:
+
+setState() on every scroll frame.
+
+Avoid using React state for:
+
+- mouse coordinates;
+- scroll progress;
+- animation progress;
+- continuously changing transform values.
+
+Use GSAP refs and GSAP state instead.
+
+---
+
+# 2.5 CSS
+
+CSS is responsible for:
+
+- static layout;
+- responsive layout;
+- typography;
+- colors;
+- base transitions;
+- visual fallback states;
+- accessibility states.
+
+CSS transitions may be used for simple microinteractions.
+
+GSAP should be used for coordinated or timeline-based motion.
+
+---
+
+# 3. GLOBAL MOTION PRINCIPLES
+
+## 3.1 Motion hierarchy
+
+Motion intensity follows the hierarchy of the website.
+
+Hero:
+HIGH
+
+Services:
+MEDIUM/HIGH
+
+Process:
+MEDIUM
+
+Gallery:
+MEDIUM
+
+FAQ:
+LOW
+
+CTA:
+LOW/MEDIUM
+
+Footer:
+VERY LOW
+
+The entire website must NOT animate with the same intensity.
+
+---
+
+# 3.2 Motion must have hierarchy
+
+Primary elements receive stronger motion.
+
+Secondary elements receive subtle motion.
+
+Decorative elements receive minimal motion.
+
+Never animate every element simultaneously.
+
+---
+
+# 3.3 Motion must feel physical
+
+Prefer:
+
+- smooth acceleration;
+- smooth deceleration;
+- controlled overshoot;
+- depth;
+- inertia;
+- scale;
+- parallax;
+- masking;
+- sequencing.
+
+Avoid:
+
+- excessive bouncing;
+- random rotations;
+- aggressive elastic effects;
+- constant floating;
+- unnecessary shaking.
+
+---
+
+# 4. TRANSFORM-FIRST RULE
+
+For performance-sensitive animations, prefer:
+
+- transform;
+- opacity;
+- clip-path when necessary.
+
+Preferred properties:
+
+transform
+opacity
+clip-path
+
+Avoid animating continuously:
+
+- width;
+- height;
+- top;
+- left;
+- margin;
+- padding;
+- box-shadow;
+- filters.
+
+Layout-affecting properties may trigger unnecessary reflow.
+
+When possible:
+
+BAD:
+
+top: 100px
+
+GOOD:
+
+transform: translateY(100px)
+
+---
+
+# 5. CAMERA SIMULATION
+
+Coco Tree Service uses a cinematic visual language.
+
+Real 3D camera systems are NOT required for the Hero unless explicitly approved later.
+
+The primary camera simulation is created using:
+
+- scale;
+- translate;
+- parallax;
+- layered depth;
+- opacity;
+- masking.
+
+## 5.1 Scale-based camera movement
+
+The Hero should simulate camera movement primarily through scale.
+
+Example conceptual behavior:
+
+Initial state:
+
+scale: 1
+
+During scroll:
+
+scale: 1.08 → 1.15 → 1.22
+
+This creates the perception that the camera is moving forward.
+
+The exact values must be tuned visually.
+
+Do NOT automatically use extreme scaling.
+
+Avoid excessive zoom that causes visible image degradation.
+
+---
+
+# 5.2 Camera depth layers
+
+Hero imagery should be treated as multiple depth layers when possible.
+
+Example:
+
+Layer 1:
+background forest
+
+Layer 2:
+midground trees
+
+Layer 3:
+foreground vegetation
+
+Layer 4:
+text/UI
+
+Different layers receive different movement values.
+
+Example:
+
+background:
+scale + small translate
+
+midground:
+slightly larger translate
+
+foreground:
+stronger translate
+
+content:
+minimal movement
+
+This creates simulated depth without requiring WebGL.
+
+---
+
+# 5.3 Camera movement direction
+
+The default Hero movement is:
+
+scroll down
+→ camera moves forward
+→ environment opens
+→ visual activity becomes more visible
+→ next section is revealed.
+
+Avoid arbitrary movement that contradicts the narrative.
+
+---
+
+# 6. HERO MOTION SYSTEM
+
+The Hero is the most sophisticated animated section.
+
+The Hero must support:
+
+- smooth scrolling;
+- cinematic camera simulation;
+- parallax;
+- layered depth;
+- text reveal;
+- CTA reveal;
+- scroll indicator;
+- masking;
+- section transition.
+
+---
+
+## 6.1 Hero initial state
+
+Initial visual state:
+
+- background visible;
+- text visible or partially revealed;
+- CTA visible;
+- navigation visible;
+- scroll indicator visible.
+
+Initial animation must be lightweight.
+
+Do not create a long blocking entrance animation.
+
+---
+
+# 6.2 Hero entrance timeline
+
+Use a GSAP timeline.
+
+Suggested order:
+
+1. background opacity;
+2. background scale;
+3. title reveal;
+4. subtitle reveal;
+5. CTA reveal;
+6. scroll indicator.
+
+The sequence must feel cinematic but fast enough that the user can interact immediately.
+
+Target entrance duration:
+
+approximately 1.0–2.0 seconds.
+
+Do not block interaction during the animation.
+
+---
+
+# 6.3 Hero scroll timeline
+
+ScrollTrigger controls the Hero transformation.
+
+Conceptual sequence:
+
+SCROLL START
+
+↓
+
+camera scale increases
+
+↓
+
+background moves
+
+↓
+
+foreground layers move faster
+
+↓
+
+title transitions
+
+↓
+
+visual mask/reveal begins
+
+↓
+
+Hero environment changes
+
+↓
+
+next section becomes visible
+
+SCROLL END
+
+---
+
+# 6.4 Hero camera values
+
+Use GSAP transforms.
+
+Example baseline:
+
+background:
+scale: 1 → 1.12
+
+midground:
+yPercent: 0 → -8
+
+foreground:
+yPercent: 0 → -14
+
+content:
+yPercent: 0 → -5
+
+These values are starting points only.
+
+Tune based on actual assets.
+
+---
+
+# 6.5 Placeholder compatibility
+
+The Hero MUST work before final assets exist.
+
+During development use:
+
+- gradient backgrounds;
+- CSS blocks;
+- temporary images;
+- generated placeholders;
+- neutral background layers.
+
+Animations must target DOM elements/classes/refs rather than specific image dimensions.
+
+Do NOT hard-code animation values based on:
+
+- final image width;
+- final image height;
+- specific photograph composition;
+- exact focal point.
+
+The animation system must survive replacing:
+
+placeholder → real image
+
+without requiring architectural changes.
+
+---
+
+# 7. SCROLL REVEAL SYSTEM
+
+Scroll reveal is used throughout the website.
+
+The reusable reveal system should support:
+
+- fade;
+- translateY;
+- translateX;
+- scale;
+- clip-path.
+
+Default reveal:
+
+opacity:
+0 → 1
+
+transform:
+translateY(30px) → translateY(0)
+
+Suggested duration:
+
+0.6–1.0 seconds.
+
+Suggested easing:
+
+power2.out
+
+or
+
+power3.out
+
+Avoid overly elastic easing for normal content.
+
+---
+
+# 7.1 Reveal stagger
+
+For groups of elements:
+
+title
+subtitle
+cards
+buttons
+
+use stagger.
+
+Example:
+
+stagger: 0.08–0.15
+
+Do not use large stagger values that make the page feel slow.
+
+---
+
+# 7.2 Reveal triggers
+
+Elements should normally animate when entering the viewport.
+
+Default ScrollTrigger concept:
+
+start:
+"top 85%"
+
+end:
+"top 50%"
+
+Exact values may be adjusted per component.
+
+---
+
+# 8. PARALLAX SYSTEM
+
+Parallax creates depth.
+
+Use only when the visual composition supports it.
+
+Do not add parallax to every image.
+
+Preferred implementation:
+
+GSAP + ScrollTrigger.
+
+Use:
+
+yPercent
+
+or
+
+transform: translateY()
+
+rather than continuously updating layout properties.
+
+---
+
+# 8.1 Parallax intensity
+
+Recommended hierarchy:
+
+Background:
+LOW
+
+Midground:
+MEDIUM
+
+Foreground:
+HIGH
+
+Text:
+LOW
+
+UI:
+VERY LOW
+
+Parallax must remain subtle enough that content remains readable.
+
+---
+
+# 9. SCALE SYSTEM
+
+Scale is a core motion primitive in this project.
+
+Use scale for:
+
+- simulated camera movement;
+- image emphasis;
+- card hover;
+- CTA interaction;
+- reveal;
+- depth;
+- transitions.
+
+Avoid excessive scaling.
+
+Typical ranges:
+
+Content reveal:
+0.96 → 1
+
+Image reveal:
+1.05 → 1
+
+Camera:
+1 → 1.10/1.20 approximately
+
+Hover:
+1 → 1.02/1.05
+
+Exact values depend on context.
+
+---
+
+# 10. IMAGE MOTION
+
+Images must feel alive without distracting from their content.
+
+Possible image animations:
+
+- scale;
+- translate;
+- clip-path;
+- opacity;
+- parallax.
+
+Do NOT constantly animate images with loops unless explicitly required.
+
+---
+
+# 10.1 Services images
+
+Service cards may use:
+
+- subtle scale on hover;
+- image translation;
+- overlay transition;
+- text movement;
+- icon movement.
+
+Example:
+
+hover:
+
+image:
+scale 1 → 1.05
+
+overlay:
+opacity changes
+
+title:
+translateY slightly
+
+icon:
+translateX slightly
+
+The entire card should feel like one coordinated interaction.
+
+---
+
+# 11. BEFORE / AFTER
+
+Before & After interactions must prioritize usability.
+
+Possible implementations:
+
+- drag comparison slider;
+- hover reveal on desktop;
+- click/tap interaction on mobile.
+
+The interaction must remain understandable without animation.
+
+Animation should reinforce the comparison, not hide it.
+
+---
+
+# 12. HORIZONTAL GALLERY
+
+If the Gallery uses horizontal scrolling:
+
+GSAP ScrollTrigger controls:
+
+- pinning;
+- horizontal translation;
+- progress.
+
+Concept:
+
+vertical scroll
+→ section pins
+→ gallery moves horizontally
+→ section unpins
+→ normal scroll resumes.
+
+Do not implement this using manual wheel event manipulation.
+
+---
+
+# 13. TEXT ANIMATION
+
+Text animations should be intentional.
+
+Supported patterns:
+
+- word reveal;
+- character reveal;
+- line reveal;
+- opacity;
+- translate;
+- clip-path.
+
+Default preference:
+
+WORD / LINE REVEAL
+
+before
+
+CHARACTER REVEAL.
+
+Character animations are visually expensive and should be reserved for important headlines.
+
+---
+
+# 13.1 Hero typography
+
+Hero H1 may use:
+
+- line reveal;
+- word reveal;
+- masking;
+- vertical translation;
+- opacity.
+
+Avoid excessive character-by-character animation.
+
+The headline must remain readable immediately after the animation.
+
+---
+
+# 14. MASK REVEALS
+
+Masking is an important part of the visual identity.
+
+Use:
+
+clip-path
+
+or GSAP-compatible masking techniques.
+
+Potential uses:
+
+- Hero transition;
+- image reveal;
+- section transition;
+- text reveal;
+- gallery entrance.
+
+Avoid excessive masking because it can increase rendering complexity.
+
+---
+
+# 15. SECTION TRANSITIONS
+
+Sections should not always simply appear one after another.
+
+Important transitions may use:
+
+- color transition;
+- image reveal;
+- clip-path;
+- scale;
+- overlap;
+- parallax.
+
+However, transitions must preserve navigation clarity.
+
+The user should always understand where one section ends and another begins.
+
+---
+
+# 16. MICROINTERACTIONS
+
+Microinteractions are used for feedback.
+
+Examples:
+
+- button hover;
+- arrow movement;
+- icon animation;
+- card hover;
+- accordion;
+- cursor interaction.
+
+Microinteractions should normally be:
+
+FAST
+
+approximately:
+
+150–400ms
+
+They should not delay the user's action.
+
+---
+
+# 16.1 Primary CTA
+
+Primary CTA hover:
+
+- slight scale;
+- background transition;
+- arrow movement.
+
+Example:
+
+button:
+scale 1 → 1.02
+
+arrow:
+translateX 0 → 4px
+
+Do not use large scale values.
+
+---
+
+# 16.2 Magnetic buttons
+
+Magnetic buttons are optional.
+
+If implemented:
+
+- use pointer position;
+- calculate relative distance from button center;
+- apply small transform;
+- reset smoothly on pointer leave.
+
+Maximum movement should remain small.
+
+Recommended maximum:
+
+approximately 6–12px.
+
+Do not make the button follow the cursor excessively.
+
+Disable or simplify on touch devices.
+
+---
+
+# 16.3 Custom cursor
+
+A custom cursor is optional.
+
+If implemented:
+
+- desktop only;
+- hidden on touch devices;
+- no interference with native click behavior;
+- use transform;
+- avoid React state updates every frame.
+
+The cursor must never reduce usability.
+
+If performance suffers, remove it.
+
+---
+
+# 17. FAQ MOTION
+
+FAQ should use simple accordion animation.
+
+Preferred:
+
+height/clip animation coordinated by GSAP or CSS.
+
+Do not use large cinematic animations here.
+
+The information architecture has priority over visual effects.
+
+---
+
+# 18. REDUCED MOTION
+
+Accessibility is mandatory.
+
+Respect:
+
+prefers-reduced-motion
+
+When reduced motion is enabled:
+
+- disable large parallax;
+- disable camera zoom;
+- disable decorative motion;
+- minimize transitions;
+- remove custom cursor;
+- remove excessive stagger;
+- preserve content visibility.
+
+The website must remain fully usable.
+
+---
+
+# 19. RESPONSIVE MOTION
+
+Motion must be responsive.
+
+Desktop and mobile do NOT need identical animation.
+
+---
+
+## Desktop
+
+May use:
+
+- parallax;
+- layered camera movement;
+- hover;
+- magnetic buttons;
+- horizontal gallery;
+- custom cursor.
+
+---
+
+## Tablet
+
+Reduce:
+
+- parallax intensity;
+- number of animated layers;
+- hover-dependent interactions.
+
+---
+
+## Mobile
+
+Prefer:
+
+- scroll reveal;
+- scale;
+- simple parallax;
+- opacity;
+- touch interactions.
+
+Avoid:
+
+- custom cursor;
+- magnetic buttons;
+- hover-only interactions;
+- excessive layered movement;
+- large pinned sections when they damage usability.
+
+---
+
+# 20. TOUCH DEVICES
+
+Never depend exclusively on hover.
+
+Every hover interaction must have an alternative behavior.
+
+Example:
+
+Desktop:
+hover → image scale
+
+Mobile:
+tap/scroll → image state
+
+---
+
+# 21. PERFORMANCE RULES
+
+Performance is a first-class requirement.
+
+Prioritize:
+
+transform
+opacity
+
+Use:
+
+will-change
+
+only when justified.
+
+Do not apply:
+
+will-change: transform
+
+to hundreds of elements permanently.
+
+---
+
+# 21.1 Animation cleanup
+
+Every GSAP animation created by a React component must be cleaned up.
+
+Use:
+
+gsap.context()
+
+or an equivalent cleanup mechanism.
+
+ScrollTriggers must be reverted when the component unmounts.
+
+Do not leave orphaned:
+
+- timelines;
+- ScrollTriggers;
+- event listeners;
+- animation loops.
+
+---
+
+# 21.2 DOM references
+
+Prefer:
+
+useRef()
+
+for animated elements.
+
+Do not query the entire document unnecessarily.
+
+Avoid excessive:
+
+document.querySelectorAll()
+
+inside components.
+
+Scope animations to their component.
+
+---
+
+# 21.3 React Server Components
+
+Components that use:
+
+- GSAP;
+- ScrollTrigger;
+- Lenis;
+- window;
+- document;
+- pointer events;
+
+must be Client Components where required.
+
+Use:
+
+"use client"
+
+only when necessary.
+
+Do not convert the entire application into Client Components.
+
+Keep static sections server-rendered whenever possible.
+
+---
+
+# 22. ANIMATION ARCHITECTURE
+
+Animation logic must remain separate from visual markup when complexity justifies it.
+
+Project structure:
+
+animations/
+├── heroAnimations.ts
+├── scrollAnimations.ts
+├── parallax.ts
+└── reveal.ts
+
+---
+
+# 22.1 heroAnimations.ts
+
+Responsible for:
+
+- Hero entrance;
+- Hero camera simulation;
+- Hero scale;
+- Hero parallax;
+- Hero masking;
+- Hero timeline.
+
+It must NOT contain:
+
+- JSX;
+- business data;
+- content;
+- API logic.
+
+---
+
+# 22.2 scrollAnimations.ts
+
+Responsible for:
+
+- generic ScrollTrigger configurations;
+- section-level scroll behavior;
+- shared scroll utilities.
+
+---
+
+# 22.3 parallax.ts
+
+Responsible for reusable parallax behavior.
+
+The API should allow:
+
+- target;
+- intensity;
+- trigger;
+- start;
+- end.
+
+---
+
+# 22.4 reveal.ts
+
+Responsible for reusable reveal behavior.
+
+It should support:
+
+- fade;
+- translate;
+- scale;
+- clip-path;
+- stagger.
+
+---
+
+# 23. GSAP CONTEXT RULE
+
+Every React animation should be scoped.
+
+Preferred conceptual pattern:
+
+useGSAP(() => {
+    // animation
+}, {
+    scope: containerRef
+});
+
+or:
+
+const ctx = gsap.context(() => {
+    // animation
+}, containerRef);
+
+return () => ctx.revert();
+
+Use the project's installed GSAP React integration when available.
+
+---
+
+# 24. LENIS + GSAP SYNCHRONIZATION
+
+Lenis and GSAP ScrollTrigger must be synchronized.
+
+The architecture must ensure:
+
+Lenis scroll
+↓
+GSAP ticker / ScrollTrigger
+↓
+animation progress
+
+Do NOT create independent animation clocks.
+
+Do NOT run competing requestAnimationFrame loops.
+
+There must be one coherent scroll-animation pipeline.
+
+---
+
+# 25. LOADING AND ASSET INDEPENDENCE
+
+The motion system must not assume final assets are available.
+
+During initial development:
+
+Hero can use:
+
+- CSS gradient;
+- placeholder image;
+- placeholder video;
+- solid background.
+
+Services can use:
+
+- placeholder cards;
+- generated temporary images;
+- colored blocks.
+
+Gallery can use:
+
+- placeholder images.
+
+Animations must still be implemented.
+
+---
+
+# 25.1 Asset replacement rule
+
+When real assets are added later:
+
+placeholder asset
+→
+real asset
+
+must NOT require rewriting the animation architecture.
+
+Only:
+
+- asset path;
+- dimensions/aspect ratio;
+- focal positioning;
+- optional animation tuning
+
+should change.
+
+---
+
+# 25.2 Image aspect ratio
+
+Components must define predictable containers.
+
+Use:
+
+aspect-ratio
+
+or fixed responsive containers.
+
+Do not allow image loading to unexpectedly change layout.
+
+Use appropriate:
+
+object-fit
+
+and:
+
+object-position.
+
+---
+
+# 26. VIDEO MOTION
+
+Hero video may be introduced later.
+
+The animation architecture must support:
+
+- autoplay where permitted;
+- muted playback;
+- loop;
+- poster fallback;
+- desktop/mobile sources if necessary;
+- lazy loading when appropriate.
+
+Scroll-controlled video is optional and must only be implemented if the visual narrative justifies it.
+
+If scroll-controlled video is used:
+
+scroll progress
+→
+video.currentTime
+
+must be controlled efficiently.
+
+Do not continuously force React re-renders.
+
+---
+
+# 27. HERO VIDEO FALLBACK
+
+The Hero must work if video fails.
+
+Fallback hierarchy:
+
+1. Hero video
+2. Hero poster image
+3. CSS background
+
+The animation system must not break if the video is unavailable.
+
+---
+
+# 28. MOTION TOKENS
+
+Use centralized motion constants when values are reused.
+
+Example conceptual structure:
+
+MOTION_DURATION
+MOTION_EASE
+MOTION_DISTANCE
+MOTION_SCALE
+MOTION_PARALLAX
+
+Do not scatter arbitrary animation values across dozens of components.
+
+---
+
+# 29. EASING
+
+Default easing:
+
+power2.out
+
+Use:
+
+power3.out
+
+for stronger cinematic movement.
+
+Use:
+
+power4.out
+
+sparingly.
+
+Avoid:
+
+elastic
+
+bounce
+
+back
+
+unless the interaction specifically requires it.
+
+Cinematic motion should feel controlled.
+
+---
+
+# 30. TIMING GUIDELINES
+
+Microinteraction:
+
+150–400ms
+
+UI transition:
+
+300–600ms
+
+Content reveal:
+
+600–1000ms
+
+Hero entrance:
+
+1000–2000ms
+
+Large cinematic transition:
+
+1000–2000ms+
+
+Longer durations require clear narrative justification.
+
+---
+
+# 31. STAGGER GUIDELINES
+
+Small UI groups:
+
+0.05–0.10s
+
+Content groups:
+
+0.08–0.15s
+
+Large cinematic sequences:
+
+0.10–0.25s
+
+Avoid excessive stagger.
+
+---
+
+# 32. SCROLLTRIGGER GUIDELINES
+
+Default:
+
+scrub:
+true
+
+may be used for continuous scroll-driven animation.
+
+For discrete reveals:
+
+toggleActions
+
+or:
+
+once: true
+
+may be preferred.
+
+Do not use scrub for every animation.
+
+---
+
+# 33. PINNING
+
+Pinned sections are allowed for:
+
+- Hero;
+- horizontal Gallery;
+- major narrative transitions.
+
+Do not pin ordinary content unnecessarily.
+
+Pinned sections must be tested extensively on:
+
+- desktop;
+- tablet;
+- iOS Safari;
+- Android browsers.
+
+---
+
+# 34. Z-INDEX AND LAYERING
+
+Animated layered scenes must use a predictable hierarchy.
+
+Example:
+
+background
+z-index: 0
+
+midground
+z-index: 1
+
+foreground
+z-index: 2
+
+content
+z-index: 10
+
+navigation
+z-index: 100
+
+Do not create arbitrary z-index values throughout the application.
+
+---
+
+# 35. OVERFLOW
+
+Sections containing:
+
+- parallax;
+- scale;
+- masks;
+- translated images;
+
+may require:
+
+overflow: hidden
+
+but this must be applied intentionally.
+
+Do not globally apply overflow hidden to the page.
+
+---
+
+# 36. SCROLL PROGRESS
+
+A global or section-specific scroll progress indicator may use:
+
+scaleX(0 → 1)
+
+rather than width changes.
+
+Preferred:
+
+transform: scaleX()
+
+with:
+
+transform-origin: left
+
+This avoids unnecessary layout changes.
+
+---
+
+# 37. DEBUGGING
+
+During development, animations must be easy to inspect.
+
+Use GSAP markers when debugging:
+
+markers: true
+
+but remove or disable them before production.
+
+Animation code should be organized so individual timelines can be isolated and tested.
+
+---
+
+# 38. ANIMATION NAMING
+
+Use descriptive names.
+
+Good:
+
+heroCameraTimeline
+
+servicesReveal
+
+galleryHorizontalTimeline
+
+ctaReveal
+
+Bad:
+
+anim1
+
+timeline2
+
+effect
+
+thing
+
+---
+
+# 39. NO MAGIC NUMBERS
+
+Avoid unexplained values such as:
+
+123
+47
+-83
+1.173
+
+If a value has visual meaning, centralize it or document why it exists.
+
+Example:
+
+const HERO_CAMERA_ZOOM = 1.12;
+
+This is preferable to:
+
+scale: 1.12
+
+appearing repeatedly without context.
+
+---
+
+# 40. MOTION COMPONENT RESPONSIBILITY
+
+Each component owns its own local animation when possible.
+
+Example:
+
+Hero
+→ Hero animation
+
+ServiceCard
+→ hover animation
+
+Process
+→ process reveal
+
+Gallery
+→ gallery animation
+
+Global animation utilities should only provide reusable mechanisms.
+
+Do not create one enormous animation file controlling the entire website unless the animation genuinely requires a global timeline.
+
+---
+
+# 41. GLOBAL VS LOCAL ANIMATION
+
+Global:
+
+- Lenis;
+- ScrollTrigger configuration;
+- shared motion tokens;
+- shared reveal functions.
+
+Local:
+
+- Hero camera;
+- service hover;
+- process reveal;
+- gallery movement;
+- CTA interaction.
+
+---
+
+# 42. MOTION AND CONTENT
+
+Animation must never compensate for weak content.
+
+The sequence is:
+
+content hierarchy
+→
+visual hierarchy
+→
+motion
+
+not:
+
+motion
+→
+content.
+
+---
+
+# 43. MOTION AND CONVERSION
+
+Motion must support conversion.
+
+Primary conversion elements:
+
+- Get a Free Estimate;
+- Call;
+- Contact;
+- Service selection.
+
+CTA animations must make the action noticeable without becoming distracting.
+
+Do not hide conversion elements behind long animations.
+
+---
+
+# 44. MOTION FAILURE RULE
+
+If an animation:
+
+- causes jank;
+- delays interaction;
+- harms accessibility;
+- creates layout instability;
+- makes mobile navigation difficult;
+- consumes excessive CPU/GPU;
+
+simplify or remove it.
+
+Visual sophistication is secondary to usability and performance.
+
+---
+
+# 45. IMPLEMENTATION ORDER
+
+Motion must be implemented in this order.
+
+## Phase 1 — Foundation
+
+Implement:
+
+- Lenis;
+- GSAP;
+- ScrollTrigger;
+- global motion configuration;
+- cleanup strategy.
+
+## Phase 2 — Hero
+
+Implement:
+
+- entrance timeline;
+- scale camera;
+- layered parallax;
+- text reveal;
+- CTA reveal;
+- scroll indicator;
+- Hero transition.
+
+## Phase 3 — Content Reveals
+
+Implement:
+
+- Introduction reveal;
+- Services reveal;
+- Process reveal;
+- Gallery reveal;
+- FAQ reveal;
+- CTA reveal.
+
+## Phase 4 — Interactions
+
+Implement:
+
+- buttons;
+- service cards;
+- accordion;
+- gallery;
+- before/after.
+
+## Phase 5 — Advanced Motion
+
+Only after the fundamentals are stable:
+
+- horizontal gallery;
+- complex masks;
+- magnetic buttons;
+- custom cursor;
+- scroll-controlled video;
+- advanced camera transitions.
+
+Do not implement every advanced effect simultaneously.
+
+---
+
+# 46. DEVELOPMENT WITHOUT FINAL ASSETS
+
+This is mandatory for the first production phase.
+
+The website must be built with temporary assets first.
+
+The developer must NOT stop animation development because final images are unavailable.
+
+Use placeholders with realistic:
+
+- aspect ratios;
+- dimensions;
+- positioning;
+- layer structure.
+
+The objective is to validate:
+
+- layout;
+- animation;
+- timing;
+- responsiveness;
+- component architecture;
+- performance.
+
+Final photography and video will be inserted later.
+
+After inserting final assets, perform a visual tuning pass.
+
+---
+
+# 47. FINAL ASSET INTEGRATION
+
+When real assets are introduced, evaluate:
+
+- focal point;
+- crop;
+- object-position;
+- contrast;
+- animation intensity;
+- scale limits;
+- parallax intensity;
+- readability;
+- loading performance.
+
+Do NOT redesign the animation architecture simply because an image changed.
+
+Only tune animation parameters when necessary.
+
+---
+
+# 48. PRODUCTION QUALITY CHECKLIST
+
+Before considering a motion system complete:
+
+[ ] Lenis works correctly.
+
+[ ] GSAP and ScrollTrigger are synchronized.
+
+[ ] Hero camera simulation works.
+
+[ ] Hero uses scale-based camera movement.
+
+[ ] Hero parallax works.
+
+[ ] Hero entrance works.
+
+[ ] Text reveal works.
+
+[ ] CTA animation works.
+
+[ ] Section reveals work.
+
+[ ] Services hover works.
+
+[ ] Gallery interaction works.
+
+[ ] FAQ animation works.
+
+[ ] Reduced motion works.
+
+[ ] Mobile motion is simplified.
+
+[ ] No hover-only critical functionality exists.
+
+[ ] GSAP contexts are cleaned up.
+
+[ ] ScrollTriggers are reverted correctly.
+
+[ ] No unnecessary React re-renders occur during animation.
+
+[ ] No unnecessary scroll event listeners exist.
+
+[ ] No excessive will-change usage exists.
+
+[ ] No layout-jank is introduced.
+
+[ ] Placeholder assets work.
+
+[ ] Final assets can replace placeholders without architectural changes.
+
+[ ] Animation values are centralized where appropriate.
+
+[ ] Debug markers are removed before production.
+
+[ ] Motion does not interfere with conversion.
+
+[ ] Motion does not interfere with accessibility.
+
+[ ] Motion does not compromise mobile usability.
+
+---
+
+# 49. FINAL DESIGN PRINCIPLE
+
+The motion language of Coco Tree Service should feel:
+
+CINEMATIC
+
+NATURAL
+
+CONTROLLED
+
+PRECISE
+
+PROFESSIONAL
+
+TECHNICAL
+
+The user should feel as if the website is guiding a camera through a story rather than simply displaying animated UI elements.
+
+The primary visual metaphor is:
+
+NATURE
+→
+DISCOVERY
+→
+INTERVENTION
+→
+TRANSFORMATION
+→
+RESULT
+
+Motion should reinforce this sequence.
+
+Never add animation merely because it is technically possible.
+
+Every animation must answer:
+
+"What does this movement communicate?"
+
+If the answer is nothing meaningful:
+
+DO NOT IMPLEMENT IT.

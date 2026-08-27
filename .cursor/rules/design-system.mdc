@@ -1,0 +1,317 @@
+---
+description: Visual Design System rules for the Coco Tree Service website.
+alwaysApply: true
+---
+
+# Coco Tree Service — Design System
+
+## Design Direction
+
+The visual identity must communicate:
+
+- Nature
+- Trust
+- Professionalism
+- Safety
+- Speed
+- Technical capability
+- Premium service
+
+The visual language should feel cinematic, natural, modern, and professional.
+
+Avoid generic landscaping or construction aesthetics.
+
+The design should combine natural environments with subtle visual references to professional tree-service equipment and operations.
+
+## Color Philosophy
+
+The primary visual environment should be based on dark natural tones.
+
+Preferred palette:
+
+- Deep Forest: #0B1F16
+- Forest Green: #173D2B
+- Natural Green: #2F6B45
+- Earth: #5A4634
+- Warm Sand: #D8C7A3
+- Off White: #F3F1EA
+- Pure White: #FFFFFF
+- Charcoal: #111412
+
+Use the palette consistently.
+
+Dark forest tones should dominate large visual areas.
+
+Warm sand and off-white should be used for typography and contrast.
+
+Natural green should be used for accents and interactive states.
+
+Earth tones may be used to reinforce the natural environment.
+
+Do not introduce unrelated bright colors.
+
+## Contrast
+
+Text must remain readable against imagery and backgrounds.
+
+When text overlays photography or video:
+
+- use appropriate overlays
+- use gradients when necessary
+- maintain sufficient contrast
+- avoid placing important text over visually noisy areas
+
+Do not sacrifice readability for visual effects.
+
+## Typography
+
+Typography should communicate:
+
+- authority
+- clarity
+- modern professionalism
+- premium quality
+
+Use a strong display typeface for major headlines and a highly readable sans-serif for body text.
+
+Typography hierarchy should include:
+
+- Display
+- H1
+- H2
+- H3
+- Body Large
+- Body
+- Small
+- Caption
+
+Avoid excessive font sizes on mobile.
+
+Do not introduce additional font families without a design reason.
+
+## Spacing
+
+Use a consistent spacing system.
+
+Prefer existing spacing tokens over arbitrary values.
+
+Large spacing should be used between major landing page sections.
+
+Tighter spacing should be used inside cards and UI components.
+
+The design should feel spacious rather than crowded.
+
+## Layout
+
+The site should use:
+
+- wide cinematic compositions
+- strong visual hierarchy
+- generous whitespace
+- controlled content widths
+- large imagery
+- asymmetric compositions where appropriate
+
+Avoid excessive use of centered text and symmetrical card grids.
+
+The visual rhythm should vary between sections.
+
+## Border Radius
+
+Use restrained corner rounding.
+
+Large rounded cards should not dominate the visual identity.
+
+Prefer moderate radii for:
+
+- cards
+- buttons
+- media containers
+- forms
+
+Maintain consistency throughout the interface.
+
+## Buttons
+
+Primary CTA buttons should be visually prominent but refined.
+
+Primary CTA:
+
+- strong contrast
+- clear label
+- comfortable touch area
+- subtle hover animation
+- clear focus state
+
+Secondary buttons should have lower visual emphasis.
+
+Avoid excessive button variations.
+
+Recommended CTA language should communicate action clearly, for example:
+
+- Get a Free Estimate
+- Request a Quote
+- Schedule Service
+- Contact Us
+
+Do not use vague CTA labels such as:
+
+- Learn More
+- Click Here
+
+unless context requires them.
+
+## Cards
+
+Cards should not look like generic dashboard components.
+
+For service cards:
+
+- prioritize real photography
+- use large visual areas
+- support hover interaction on desktop
+- support expansion where appropriate
+- use touch-friendly interaction on mobile
+- maintain clear hierarchy
+- reveal additional information progressively
+
+Cards should support the cinematic visual language of the site.
+
+## Photography
+
+Real photography should be prioritized over generic stock imagery whenever possible.
+
+Photography should communicate:
+
+- real trees
+- forests
+- workers
+- professional equipment
+- trucks
+- chippers
+- chainsaws
+- Bobcats
+- completed work
+- before and after results
+
+Images should feel authentic to the company and its service area.
+
+Avoid artificial-looking imagery when real photography is available.
+
+## Hero Visual Language
+
+The Hero should establish the natural identity of the company.
+
+The visual sequence should begin with a dense North American forest environment.
+
+As the user scrolls:
+
+- the camera moves deeper into the forest
+- layers of trees create depth
+- professional tree-service activity is gradually revealed
+- equipment and workers appear naturally within the environment
+
+The transition must feel like entering the operation rather than switching between unrelated sections.
+
+## Navigation
+
+The Navbar should remain minimal.
+
+Desktop navigation should prioritize:
+
+- logo
+- primary navigation
+- primary CTA
+
+The navigation should not visually compete with the Hero.
+
+Transparent navigation may be used over the Hero.
+
+A solid or blurred background may appear when scrolling into content.
+
+## Imagery and Overlays
+
+When using full-screen imagery:
+
+- preserve the visual subject
+- avoid excessive darkening
+- use gradients instead of heavy overlays when possible
+- maintain cinematic depth
+
+Do not apply the same overlay strength to every image.
+
+## Responsive Design
+
+The Design System must adapt to:
+
+### Desktop
+
+Use large cinematic compositions, generous spacing, hover states, and complex motion.
+
+### Tablet
+
+Reduce scale and spacing while preserving hierarchy and visual impact.
+
+### Mobile
+
+Prioritize:
+
+- readability
+- touch interaction
+- performance
+- clear hierarchy
+- simplified motion
+
+Hover-dependent interactions must have an equivalent touch interaction.
+
+## Motion and Visual Effects
+
+Motion should enhance the visual hierarchy.
+
+Use:
+
+- subtle scale
+- opacity
+- transform
+- parallax
+- reveal
+- masking
+- depth
+- controlled transitions
+
+Avoid excessive:
+
+- bouncing
+- rotating
+- flashing
+- unnecessary 3D effects
+
+Animation should feel natural and cinematic.
+
+## Consistency
+
+All new UI must follow the established Design System.
+
+Do not introduce:
+
+- random colors
+- random typography
+- unrelated shadows
+- inconsistent radii
+- arbitrary animation styles
+- unrelated visual patterns
+
+When a new visual treatment is necessary, extend the existing system instead of creating an isolated style.
+
+## Design Priority
+
+When visual decisions conflict, prioritize in this order:
+
+1. Usability
+2. Readability
+3. Conversion
+4. Performance
+5. Brand consistency
+6. Visual effects
+
+Visual complexity must never compromise usability or performance.

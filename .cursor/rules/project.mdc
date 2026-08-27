@@ -1,0 +1,160 @@
+﻿---
+description: Core development rules, architectural principles, and conversion goals for the Coco Tree Service website.
+alwaysApply: true
+---
+
+# Coco Tree Service — Project Rules
+
+## Project Goal
+
+Build a premium, high-performance landing page for Coco Tree Service focused on trust, professionalism, safety, speed, and conversion.
+
+The visual direction is natural and cinematic, using forests, trees, real photography, professional equipment, workers, trucks, chippers, chainsaws, and Bobcats as visual elements.
+
+The website must communicate that professional tree work and respect for the natural environment can coexist.
+
+The primary conversion target of the website is driving users to request a free estimate ("Get a Free Estimate").
+
+## Core Principles
+
+- Prioritize clean, maintainable, production-ready code.
+- Prefer simple solutions over unnecessary complexity.
+- Do not install dependencies unless there is a clear technical reason.
+- Reuse existing components before creating new ones.
+- Do not duplicate code.
+- Do not create abstractions without a real need.
+- Keep components focused on a single responsibility.
+- Do not modify unrelated files when implementing a feature.
+- Preserve existing functionality when modifying components.
+- Do not rewrite working code unnecessarily.
+
+## Technology
+
+Use the project's existing technology stack:
+
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- GSAP
+- ScrollTrigger
+- Lenis
+- Lucide React
+- Zod when validation is required
+
+Do not introduce another framework, animation library, UI library, or state-management library without first establishing a concrete technical need.
+
+## Server and Client Components (RSC Strategy)
+
+- Keep pp/page.tsx as a **React Server Component (RSC)**. Do NOT place "use client" at the top of page.tsx or global layout files.
+- Compose the main landing page by importing individual section wrappers (e.g., <HeroSection />, <ServicesSection />, <EstimateModal />).
+- Declare "use client" strictly inside lower-level component files or section containers that require interactive behavior, DOM listeners, React hooks, GSAP timelines, ScrollTrigger, or Lenis instances.
+
+## TypeScript
+
+- Use TypeScript throughout the project.
+- Avoid ny unless there is a documented technical reason.
+- Prefer explicit interfaces or types for reusable component data (centralized in 	ypes/).
+- Keep component props strictly typed.
+- Resolve TypeScript errors instead of suppressing them.
+
+## Components & Architecture
+
+- Build reusable components when the same UI pattern appears more than once.
+- Keep large sections divided into logical components.
+- Separate UI primitives (components/ui/), layout containers (components/layout/), interactive forms (components/forms/), and page sections (components/sections/).
+- Primary conversion flows, including the estimate form (EstimateForm) and modal triggers, belong strictly inside components/forms/ or components/ui/.
+- Keep content/data separate from presentation components by putting static models inside data/.
+
+## Styling
+
+- Use Tailwind CSS for component styling.
+- Follow the project's Design System.
+- Avoid arbitrary values when an existing design token or utility can be used.
+- Do not introduce a second styling system.
+- Maintain consistent spacing, typography, borders, radii, and visual hierarchy.
+
+## Responsive Design
+
+Every visual component must be considered for:
+
+- Desktop
+- Tablet
+- Mobile
+
+Do not treat mobile as an afterthought.
+
+Animations must degrade gracefully on smaller devices.
+
+## Accessibility
+
+- Use semantic HTML.
+- Buttons must be actual buttons.
+- Links must be actual links.
+- Images require meaningful alt text when appropriate.
+- Interactive elements must remain usable with keyboard navigation.
+- Maintain sufficient visual contrast.
+- Respect prefers-reduced-motion for non-essential animations.
+
+## Performance
+
+- Optimize images and video.
+- Use lazy loading when appropriate.
+- Avoid unnecessary client-side JavaScript.
+- Prefer Server Components unless client-side behavior is required.
+- Do not load heavy libraries or assets unnecessarily.
+- Keep animations efficient.
+
+## Animation
+
+GSAP and ScrollTrigger are the primary tools for complex motion.
+
+Lenis is used for smooth scrolling where appropriate.
+
+Use CSS for simple hover states and micro-interactions when GSAP is unnecessary.
+
+Animations must support the design and conversion goals rather than exist purely as decoration.
+
+## Content
+
+Do not invent factual business information such as:
+
+- prices
+- addresses
+- phone numbers
+- certifications
+- years of experience
+- service areas
+- testimonials
+- guarantees
+
+Use placeholders or clearly marked temporary content until verified information is provided.
+
+## Development Workflow
+
+Before implementing a new feature:
+
+1. Inspect the existing project structure.
+2. Check whether a reusable component already exists.
+3. Check whether an existing dependency can solve the problem.
+4. Implement only the required change.
+5. Test the result.
+6. Check TypeScript and linting.
+7. Check responsive behavior.
+8. Review the final code for unnecessary duplication or complexity.
+
+## Git
+
+Keep commits focused and meaningful.
+
+Do not mix unrelated changes in the same commit.
+
+Do not commit secrets, credentials, API keys, or .env.local.
+
+## Agent Behavior
+
+Before making significant architectural changes, explain the reason.
+
+If requirements are ambiguous and the decision could materially affect architecture, ask before proceeding.
+
+Do not make broad changes when a targeted change is sufficient.

@@ -1,0 +1,261 @@
+﻿---
+description: Architecture and file organization rules for the Coco Tree Service project.
+alwaysApply: true
+---
+
+# Coco Tree Service — Architecture Rules
+
+## Project Structure
+
+The project follows this structure:
+
+app/
+components/
+animations/
+data/
+lib/
+public/
+types/
+
+## App
+
+The pp/ directory contains Next.js application routes and global application configuration.
+
+Keep pp/page.tsx focused on composing the landing page sections.
+
+Do not place large component implementations directly inside page.tsx.
+
+The main page should orchestrate sections such as:
+
+- Navbar
+- Hero
+- Introduction
+- Services
+- Process
+- Gallery
+- FAQ
+- CTA
+- Footer
+
+## Components
+
+The components/ directory contains reusable React components.
+
+Organize components by purpose:
+
+components/
++-- ui/
++-- navigation/
++-- sections/
++-- cards/
++-- forms/
+
+### UI
+
+Small reusable interface elements:
+
+- Button
+- Icon
+- Badge
+- Divider
+
+### Navigation
+
+Navigation-related components:
+
+- Navbar
+- NavLink
+- MobileMenu
+
+### Sections
+
+Major landing page sections:
+
+- Hero
+- Introduction
+- Services
+- Process
+- Gallery
+- FAQ
+- CTA
+- Footer
+
+### Cards
+
+Reusable content patterns:
+
+- ServiceCard
+- ProcessStep
+- GalleryItem
+- Testimonial
+
+### Forms
+
+Reusable form elements:
+
+- EstimateForm
+- FormField
+
+## Data
+
+The data/ directory contains structured content used by components.
+
+Examples:
+
+data/
++-- services.ts
++-- process.ts
++-- gallery.ts
++-- testimonials.ts
++-- faq.ts
+
+Do not hardcode repeated content directly inside reusable components when it can reasonably be represented as structured data.
+
+## Animations
+
+The nimations/ directory contains reusable animation logic.
+
+Examples:
+
+animations/
++-- heroAnimations.ts
++-- scrollAnimations.ts
++-- parallax.ts
++-- reveal.ts
+
+Do not place large GSAP timelines directly inside unrelated UI components when the animation can be isolated into the animation layer.
+
+Animation logic may remain inside a component when it is small and tightly coupled to that component.
+
+## Lib
+
+The lib/ directory contains shared utilities and application helpers.
+
+Examples:
+
+lib/
++-- utils.ts
++-- validation.ts
++-- constants.ts
+
+Do not place UI components inside lib/.
+
+## Types
+
+The 	ypes/ directory contains shared TypeScript types and interfaces.
+
+Use shared types when multiple components or data modules depend on the same structure.
+
+## Public Assets
+
+Organize public assets by purpose:
+
+public/
++-- images/
+    +-- hero/
+    +-- services/
+    +-- gallery/
+    +-- process/
++-- videos/
+    +-- hero/
++-- icons/
++-- logo/
+
+Use descriptive filenames.
+
+Avoid generic names such as:
+
+- image1
+- image2
+- final
+- final2
+- new-image
+
+## Component Responsibility
+
+Each component should have a clear responsibility.
+
+Prefer:
+
+Section
+-> reusable component
+-> UI component
+
+over large components containing unrelated responsibilities.
+
+## Reusability
+
+Before creating a new component:
+
+1. Search the existing component library.
+2. Determine whether an existing component can be reused.
+3. Extend the existing component if appropriate.
+4. Create a new component only when the behavior or visual responsibility is meaningfully different.
+
+## Dependencies
+
+Do not introduce dependencies to solve problems that can reasonably be solved with existing project capabilities.
+
+Before installing a package:
+
+1. Check whether the required functionality already exists.
+2. Check whether the project already has a suitable dependency.
+3. Evaluate bundle size and maintenance impact.
+4. Only then introduce the dependency.
+
+## Modification Scope
+
+When implementing a feature, modify only the files required for that feature.
+
+Do not refactor unrelated areas unless explicitly requested or required to prevent a real technical problem.
+
+## Page Composition
+
+The landing page should remain readable at a high level.
+
+Conceptually:
+
+<Navbar />
+
+<main>
+  <Hero />
+  <Introduction />
+  <Services />
+  <Process />
+  <Gallery />
+  <FAQ />
+  <CTA />
+</main>
+
+<Footer />
+
+The actual implementation may differ when technically necessary, but the page composition should remain easy to understand.
+
+## Server and Client Components
+
+Prefer React Server Components by default.
+
+Use "use client" only when client-side behavior is required, such as:
+
+- state
+- browser APIs
+- interactive UI
+- GSAP
+- ScrollTrigger
+- Lenis
+
+Do not convert entire sections to Client Components unnecessarily.
+
+## Architecture Principle
+
+The project should remain understandable to a developer who did not create it.
+
+Favor:
+
+- clear naming
+- predictable locations
+- small responsibilities
+- reusable components
+- explicit data structures
+- minimal dependencies
+- minimal duplication
